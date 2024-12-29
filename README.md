@@ -12,12 +12,15 @@ The project consists of XML layout files and Java classes organized as follows:
 res/layout/
     ├── activity_main.xml         // Main activity layout with DrawerLayout
     ├── header_layout.xml         // Navigation drawer header
-    ├── navigation_menu.xml       // Navigation menu items
     ├── app_bar_main.xml          // App bar layout
     ├── content_main.xml          // Main content container
     ├── fragment_home.xml         // Home fragment layout
     ├── fragment_notes.xml        // Notes fragment layout
     └── fragment_settings.xml     // Settings fragment layout
+
+res/menu/
+ 
+   ├── navigation_menu.xml       // Navigation menu items
 ```
 
 ### Java Files
