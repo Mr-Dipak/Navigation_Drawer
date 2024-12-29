@@ -22,6 +22,14 @@ res/menu/
  
    ├── navigation_menu.xml       // Navigation menu items
 ```
+### XML Navigation Menu File
+
+```
+res/menu/
+ 
+   ├── navigation_menu.xml       // Navigation menu items
+```
+
 
 ### Java Files
 
