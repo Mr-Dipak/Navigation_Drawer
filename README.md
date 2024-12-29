@@ -1,53 +1,51 @@
-Here is the updated `README.md` file with the requested content:
+# Navigation Drawer Implementation Guide
 
-```markdown
-# Android Navigation Drawer Implementation Guide
+This guide provides a complete implementation of a Navigation Drawer in Android, including all necessary layout files and Java classes.
 
-A comprehensive guide to implementing a Navigation Drawer in Android applications.
+## Project Structure Overview
 
-## Table of Contents
+The project consists of XML layout files and Java classes organized as follows:
 
-1. Project Structure
-2. Implementation Files
-3. Setup Requirements
-4. Fragments
-5. License
-6. Contributing
-7. Contact
-
-## Project Structure
+### XML Layout Files
 
 ```
-app/
-└── src/
-└── main/
-├── java/
-│   └── com.example.app/
-│       └── MainActivity.java
-└── res/
-├── layout/
-│   ├── activity_main.xml
-│   ├── app_bar_main.xml
-│   ├── content_main.xml
-│   └── header_layout.xml
-└── menu/
-└── navigation_menu.xml
+res/layout/
+    ├── activity_main.xml         // Main activity layout with DrawerLayout
+    ├── header_layout.xml         // Navigation drawer header
+    ├── navigation_menu.xml       // Navigation menu items
+    ├── app_bar_main.xml          // App bar layout
+    ├── content_main.xml          // Main content container
+    ├── fragment_home.xml         // Home fragment layout
+    ├── fragment_notes.xml        // Notes fragment layout
+    └── fragment_settings.xml     // Settings fragment layout
 ```
 
-## Implementation Files
+### Java Files
 
-### 1. activity_main.xml
+```
+java/com/example/app/
+    ├── MainActivity.java         // Main activity with drawer implementation
+    ├── Home.java                 // Home fragment
+    ├── Notes.java                // Notes fragment
+    └── Settings.java             // Settings fragment
+```
 
-Main layout file that includes the DrawerLayout and NavigationView.
+## Detailed Implementation
+
+### 1. Layout Files
+
+### activity_main.xml
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout 
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <include
         layout="@layout/app_bar_main"
@@ -59,15 +57,14 @@ Main layout file that includes the DrawerLayout and NavigationView.
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_layout"
         app:menu="@menu/navigation_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
 ```
 
-### 2. header_layout.xml
-
-Defines the header section of the navigation drawer with user profile information.
+### header_layout.xml
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -78,17 +75,17 @@ Defines the header section of the navigation drawer with user profile informatio
     android:background="@color/design_default_color_primary"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="bottom">
+    android:gravity="start">
 
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/profile_image"/>
+        android:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Name"
+        android:text="UDMS user"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:layout_marginTop="8dp"/>
@@ -96,47 +93,41 @@ Defines the header section of the navigation drawer with user profile informatio
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="user@email.com"
+        android:text="udms@bamu.ac.in"
         android:textColor="@android:color/white"/>
 
 </LinearLayout>
 ```
 
-### 3. navigation_menu.xml
-
-Contains the menu items for the navigation drawer.
+### navigation_menu.xml
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home"
-            android:title="Home" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Profile" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings" />
-    </group>
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_notes"
+        android:icon="@drawable/notes"
+        android:title="Notes" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/settings"
+        android:title="Settings" />
 </menu>
 ```
 
-### 4. app_bar_main.xml
-
-Implements the app bar with toolbar.
+### app_bar_main.xml
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -145,135 +136,114 @@ Implements the app bar with toolbar.
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.AppCompat.Light" />
+            android:layout_height="wrap_content">
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
 ```
 
-### 5. content_main.xml
-
-Contains the main content of the activity.
+### content_main.xml
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_height="match_parent">
 
-    <!-- Your main content goes here -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Main Content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container">
+    </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 ```
 
-### 6. MainActivity.java
+### 2. Java Implementation
 
-Main activity class that handles the navigation drawer functionality.
+### MainActivity.java
 
 ```java
+package bamu.udms.navigationdrawer;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.navigation.NavigationView;
+
 public class MainActivity extends AppCompatActivity {
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private ActionBarDrawerToggle toggle;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
+    private static final String TAG = "MyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize views
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        // Initialize the views
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
 
-        // Setup drawer toggle
-        toggle = new ActionBarDrawerToggle(
-            this, 
-            drawerLayout, 
-            toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        );
+        // Set the toolbar as the action bar
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Handle navigation item clicks
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            
-            if (id == R.id.nav_home) {
-                // Handle home click
-            } else if (id == R.id.nav_profile) {
-                // Handle profile click
-            } else if (id == R.id.nav_settings) {
-                // Handle settings click
+        loadFragment(new Home());
+
+        // Set the navigation view item selected listener
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                // Handle navigation view item clicks here.
+                int id = item.getItemId();
+
+                if (id == R.id.nav_home) {
+                    Log.d(TAG, "onNavigationItemSelected: Home");
+                    // Handle the home action
+                    loadFragment(new Home());
+                } else if (id == R.id.nav_notes) {
+                    // Handle the notes action
+                    Log.d(TAG, "onNavigationItemSelected: Notes");
+                    loadFragment(new Notes());
+                } else if (id == R.id.nav_settings) {
+                    // Handle the slideshow action
+                    Log.d(TAG, "onNavigationItemSelected: Settings");
+                    loadFragment(new Settings());
+                }
+
+                drawerLayout.closeDrawer(navigationView);
+                return true;
             }
-            
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return true;
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    public void loadFragment(Fragment fragment) {
+        // Load the fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 }
 ```
 
-## Setup Requirements
+### Fragment Classes
 
-### Dependencies
-
-Add the following dependencies to your `build.gradle` file:
-
-```gradle
-implementation 'com.google.android.material:material:1.x.x'
-implementation 'androidx.appcompat:appcompat:1.x.x'
-implementation 'androidx.constraintlayout:constraintlayout:2.x.x'
-```
-
-### Theme Setup
-
-Add the following to `styles.xml`:
-
-```xml
-<style name="Theme.YourApp" parent="Theme.MaterialComponents.Light.NoActionBar">
-    <!-- Your theme customizations -->
-</style>
-```
-
-### Additional Requirements
-
-- Configure NoActionBar theme in `AndroidManifest.xml`
-- Add string resources for navigation drawer open/close actions
-- Include vector drawables for menu icons
-
-## Fragments
-
-### Home.java
+Each fragment class (Home.java, Notes.java, Settings.java) follows a similar pattern:
 
 ```java
 package bamu.udms.navigationdrawer;
@@ -292,56 +262,23 @@ public class Home extends Fragment {
 }
 ```
 
-### fragment_home.xml
+Make sure to update your theme in `styles.xml` to use a Material theme:
 
 ```xml
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wellcome class to the Presentesion of Android Navigation Drawer"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:padding="16dp"
-        android:background="@android:color/holo_blue_light"
-        android:layout_margin="16dp"
-        android:elevation="4dp"
-        android:shadowColor="@android:color/darker_gray"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="3"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello I'm the home fragment"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:padding="16dp"
-        android:background="@android:color/holo_blue_light"
-        android:layout_margin="16dp"
-        android:elevation="4dp"
-        android:shadowColor="@android:color/darker_gray"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="3"/>
-</LinearLayout>
+<style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Customize your theme here -->
+</style>
 ```
 
-## License
+## Usage Notes
 
-MIT License
+- The navigation drawer can be opened by swiping from the left edge or tapping the hamburger menu icon.
+- Each menu item will load its corresponding fragment into the main content area.
+- The drawer automatically closes after selecting a menu item.
+- Back button handling is implemented to close the drawer if it's open.
 
-## Contributing
+## Customization Tips
 
-Feel free to submit issues and enhancement requests.
-
-## Contact
-
-For any questions or suggestions, please open an issue in the repository.
-```
+- Modify the `header_layout.xml` to customize the navigation drawer header.
+- Add or remove menu items in `navigation_menu.xml`.
+- Customize the appearance using themes and styles.
